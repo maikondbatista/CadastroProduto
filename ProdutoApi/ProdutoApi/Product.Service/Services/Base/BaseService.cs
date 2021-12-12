@@ -9,14 +9,13 @@ namespace Products.Service.Services
     public abstract class BaseService<T> where T : BaseEntity
     {
         private List<ValidationResult> _validations;
-        private readonly IRepository<T> _repository;
+        private List<string> _notifications;
         private readonly IValidator<T> _validator;
 
-        public BaseService(IRepository<T> repository,
-                            IValidator<T> validator)
+        public BaseService(IValidator<T> validator)
         {
-            _repository = repository;
             _validator = validator;
+            _notifications = new List<string>();
             _validations = new List<ValidationResult>();
         }
 
@@ -25,5 +24,9 @@ namespace Products.Service.Services
            _validations.Add(await _validator.ValidateAsync(obj, cancellationToken));
         }
 
+        protected void AddNotification(string notification)
+        {
+            _notifications?.Add(notification);
+        }
     }
 }

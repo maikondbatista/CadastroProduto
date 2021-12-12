@@ -26,6 +26,10 @@ namespace Products.Infra.Data.MySql.Mapping
                    .HasColumnName("Preco")
                    .HasColumnType("float(12,4)");
 
+            builder.Property(x => x.CategoryId)
+                   .IsRequired()
+                   .HasColumnName("IdCategoria");
+
         }
     }
 }

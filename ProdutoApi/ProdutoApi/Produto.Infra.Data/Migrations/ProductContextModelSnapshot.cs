@@ -26,6 +26,10 @@ namespace Products.Infra.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("IdProduto");
 
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("IdCategoria");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 

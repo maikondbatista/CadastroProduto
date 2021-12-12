@@ -11,8 +11,8 @@ using Products.Infra.Data.MySql.Contexts;
 namespace Products.Infra.Data.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20211212164327_inclusaoupdated")]
-    partial class inclusaoupdated
+    [Migration("20211212224454_CriacaoBanco")]
+    partial class CriacaoBanco
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,10 @@ namespace Products.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("IdProduto");
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("IdCategoria");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");

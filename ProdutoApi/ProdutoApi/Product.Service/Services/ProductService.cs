@@ -22,15 +22,15 @@ namespace Products.Service.Services
                                  IMapper mapper,
                                  ILogger<ProductService> logger,
                                  IValidator<Product> productValidator,
-                                 HttpClient httpClient) : base(productRepository, productValidator)
+                                 HttpClient httpClient) : base(productValidator)
         {
-            
+
             _productRepository = productRepository;
             _productValidator = productValidator;
             _mapper = mapper;
             _logger = logger;
-            _httpClient = httpClient; 
-        } 
+            _httpClient = httpClient;
+        }
         public async Task<IEnumerable<ProductDto>> GetAll(CancellationToken cancellationToken)
         {
             try
@@ -40,6 +40,7 @@ namespace Products.Service.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, $@"Método: GetAll");
+                AddNotification("Erro ao buscar produtos");
                 throw;
             }
         }
@@ -102,9 +103,21 @@ namespace Products.Service.Services
             }
         }
 
-        public async Task<IEnumerable<ProductDto>> GetProducts(CancellationToken token)
+        public async Task DeleteByCategoryId(long id, CancellationToken token)
         {
-            return  _mapper.Map<IEnumerable<ProductDto>>(await _productRepository.GetAll(token));
+            try
+            {
+                var products = await _productRepository.Query().AsNoTracking().Where(s => s.CategoryId == id).ToListAsync(token);
+
+                foreach (Product product in products)
+                {
+                    await Delete(product.Id, token);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $@"Método: DeleteByCategoryId, id: ", id);
+            }
         }
     }
 }

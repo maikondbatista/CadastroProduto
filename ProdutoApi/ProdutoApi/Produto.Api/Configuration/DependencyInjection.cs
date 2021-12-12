@@ -3,6 +3,7 @@ using Products.Domain.Entites;
 using Products.Domain.Interfaces.Repositories;
 using Products.Domain.Interfaces.Services;
 using Products.Domain.Validations;
+using Products.Infra.Data.MySql;
 using Products.Infra.Data.MySql.Contexts;
 using Products.Service.Services;
 

@@ -22,7 +22,9 @@ namespace Products.Infra.Data.Migrations
                     Nome = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Preco = table.Column<float>(type: "float(12,4)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    IdCategoria = table.Column<long>(type: "bigint", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {

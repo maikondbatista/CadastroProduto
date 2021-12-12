@@ -27,7 +27,7 @@ namespace Products.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDto>))]
         public async Task<IActionResult> Get(CancellationToken token)
         {
-            var result = await _service.GetProducts(token);
+            var result = await _service.GetAll(token);
             return await ResponseAsync(result);
         }
 
@@ -73,6 +73,17 @@ namespace Products.Api.Controllers
         {
             var result = await _service.GetById(id, token);
             return await ResponseAsync(result);
+        }
+
+        /// <summary>
+        /// Método que exclui todos os produtos de uma determinada categoria
+        /// </summary>
+        [HttpDelete("delete-by-category/{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDto>))]
+        public async Task<IActionResult> DeleteByCategory([FromRoute] long categoryId, CancellationToken token)
+        {
+            await _service.DeleteByCategoryId(categoryId, token);
+            return await ResponseAsync("Ok");
         }
     }
 }
