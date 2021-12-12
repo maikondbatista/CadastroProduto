@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Products.Domain.Entites;
+﻿using Products.Domain.Entites;
 using Products.Infra.Data.MySql.Contexts;
-using Produto.Infra.Data.MySql.Repositories;
 
-namespace Products.Domain.Interfaces.Repositories
+namespace Products.Infra.Data.MySql
 {
     public class ProductRepository : BaseRepository<Product>, IProductRepository
     {

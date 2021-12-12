@@ -4,7 +4,7 @@ using Products.Infra.Data.MySql.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Produto.Infra.Data.MySql.Repositories
+namespace Products.Infra.Data.MySql
 {
     public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
