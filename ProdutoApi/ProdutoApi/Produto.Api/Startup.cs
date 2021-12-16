@@ -38,6 +38,10 @@ namespace Products.Api.Application
                 options.UseMySql(Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(Configuration.GetConnectionString("MySql")));
             });
 
+            AppSettingsConfig config = new AppSettingsConfig();
+            Configuration.GetSection("Settings").Bind(config);
+
+            services.AddSingleton<AppSettingsConfig>(config);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

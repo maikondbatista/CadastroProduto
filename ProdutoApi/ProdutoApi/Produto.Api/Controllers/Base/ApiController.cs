@@ -6,28 +6,36 @@ namespace Products.Api.Controllers
 {
     public class ApiController : ControllerBase
     {
-        private List<ValidationResult> _validations;
+        protected List<string> _notifications;
+
         public ApiController()
         {
-            _validations = new List<ValidationResult>();
+            _notifications = new List<string>();
+
         }
 
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IActionResult> ResponseAsync(object result)
+        public async Task<IActionResult> ResponseAsync(object result = null)
         {
-            if(Valid())
+            if (Valid())
             {
                 return await ReturnResult(HttpStatusCode.OK, result);
             }
             else
             {
-                return await ReturnResult(HttpStatusCode.BadRequest, result);
+                return await ReturnResult(HttpStatusCode.BadRequest, GetNotificationsAndValidations());
             }
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        private async Task<IActionResult> ReturnResult(HttpStatusCode status, object result) 
+        private string GetNotificationsAndValidations()
+        {
+            return string.Join(", ", _notifications);
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        private async Task<IActionResult> ReturnResult(HttpStatusCode status, object result)
         {
             return (status) switch
             {
@@ -45,14 +53,16 @@ namespace Products.Api.Controllers
             };
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         private async Task<IActionResult> ReturnResult(HttpStatusCode status)
         {
             return await ReturnResult(status, null);
         }
 
-        private bool Valid()
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public bool Valid()
         {
-            if (_validations.Count > 0)
+            if (_notifications.Count > 0)
                 return false;
 
             return true;

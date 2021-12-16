@@ -6,6 +6,8 @@ using Products.Domain.Entites;
 using Products.Domain.Interfaces.Repositories;
 using Products.Domain.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
+using Products.Domain.Constants;
+using Products.Domain.Utils.Extensions;
 
 namespace Products.Service.Services
 {
@@ -22,7 +24,7 @@ namespace Products.Service.Services
                                  IMapper mapper,
                                  ILogger<ProductService> logger,
                                  IValidator<Product> productValidator,
-                                 HttpClient httpClient) : base(productValidator)
+                                 HttpClient httpClient) : base(productRepository, productValidator)
         {
 
             _productRepository = productRepository;
@@ -118,6 +120,13 @@ namespace Products.Service.Services
             {
                 _logger.LogError(ex, $@"Método: DeleteByCategoryId, id: ", id);
             }
+        }
+
+        public async Task<CategoryDto> CheckCategoryExists(long categoryId, string urlCategoriaApi, CancellationToken token)
+        {
+            var Url = urlCategoriaApi + EndpointConstants.CategoryById + categoryId;
+            var resp = (await (await _httpClient.GetAsync(Url, token)).Content.ReadAsStringAsync()).ToObject<CategoryDto>();
+            return resp;
         }
     }
 }

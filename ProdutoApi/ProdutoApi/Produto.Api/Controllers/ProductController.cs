@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Products.Api.Configuration;
 using Products.Domain.Dtos;
 using Products.Domain.Interfaces.Services;
 
@@ -12,11 +13,13 @@ namespace Products.Api.Controllers
 
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _service;
+        private readonly AppSettingsConfig _config;
 
 
-        public ProductController(ILogger<ProductController> logger, IProductService service)
+        public ProductController(ILogger<ProductController> logger, IProductService service, AppSettingsConfig config)
         {
             _logger = logger;
+            _config = config;
             _service = service;
         }
 
@@ -28,6 +31,7 @@ namespace Products.Api.Controllers
         public async Task<IActionResult> Get(CancellationToken token)
         {
             var result = await _service.GetAll(token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync(result);
         }
 
@@ -38,7 +42,14 @@ namespace Products.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDto>))]
         public async Task<IActionResult> Post(ProductPostDto dto, CancellationToken token)
         {
-            var result = await _service.Post(dto, token);
+            ProductDto result = null;
+            var category = await _service.CheckCategoryExists(dto.CategoryId, _config.UrlCategoriaApi, token);
+            _notifications.AddRange(_service.Validations());
+            if (Valid() && category != null && category.id != null)
+            {
+                result = await _service.Post(dto, token);
+                _notifications.AddRange(_service.Validations());
+            }
             return await ResponseAsync(result);
         }
 
@@ -61,6 +72,7 @@ namespace Products.Api.Controllers
         public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken token)
         {
             await _service.Delete(id, token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync("Ok");
         }
 
@@ -72,6 +84,7 @@ namespace Products.Api.Controllers
         public async Task<IActionResult> GetById([FromRoute] long id, CancellationToken token)
         {
             var result = await _service.GetById(id, token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync(result);
         }
 
@@ -83,6 +96,7 @@ namespace Products.Api.Controllers
         public async Task<IActionResult> DeleteByCategory([FromRoute] long categoryId, CancellationToken token)
         {
             await _service.DeleteByCategoryId(categoryId, token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync("Ok");
         }
     }
