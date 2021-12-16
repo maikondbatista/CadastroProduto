@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription, take } from 'rxjs';
 import { Product } from 'src/app/shared/models/product.model';
 import { Select } from 'src/app/shared/models/select.model';
@@ -17,10 +18,12 @@ export class ProductFormComponent implements AfterViewInit {
   form!: FormGroup;
   subscriptions: Subscription[] = [];
   categoriesSelect!: Select[]
+  categoryUrl: string = './categoria';
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    public categoryService: CategoryService
+    public categoryService: CategoryService,
+    private toastr: ToastrService
   ) {
     this.createForm();
 
@@ -33,6 +36,11 @@ export class ProductFormComponent implements AfterViewInit {
       })
     );
     this.categoryService.getAll().pipe(take(1)).subscribe(categories => {
+      if(categories.length == 0)
+      {
+        this.toastr.error("Não há categorias cadastradas");
+        return;
+      }
       this.categoriesSelect = categories.map(s => 
         {
           return { Text: s.name, Value: s.id } as Select;

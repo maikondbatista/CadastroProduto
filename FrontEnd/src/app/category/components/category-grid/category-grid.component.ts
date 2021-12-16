@@ -8,7 +8,7 @@ import { CategoryService } from 'src/app/shared/services/category.service';
   templateUrl: './category-grid.component.html',
   styleUrls: ['./category-grid.component.scss'],
 })
-export class CategoryGridComponent implements OnInit {
+export class CategoryGridComponent {
 
   page = 1;
   pageSize = 4;
@@ -16,9 +16,8 @@ export class CategoryGridComponent implements OnInit {
   gridData!: Category[];
   @Output() onClickUpdate: EventEmitter<Category> = new EventEmitter<Category>();
   constructor(private categoryService: CategoryService) {
-  }
-  ngOnInit(): void {
     this.refreshGrid();
+
   }
 
   refreshGrid() {
