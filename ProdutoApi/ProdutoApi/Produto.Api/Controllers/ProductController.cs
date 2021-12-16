@@ -73,7 +73,7 @@ namespace Products.Api.Controllers
         {
             await _service.Delete(id, token);
             _notifications.AddRange(_service.Validations());
-            return await ResponseAsync("Ok");
+            return await ResponseAsync();
         }
 
         /// <summary>
