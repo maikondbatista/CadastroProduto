@@ -1,11 +1,8 @@
-﻿namespace Categories.Domain.Dtos
+﻿namespace Categories.Domain.Dtos.Category
 {
-    public class CategoryDto
+    public class CategoryDto : CategoryBaseDto
     {
-        public virtual long Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual DateTime Created { get; set; }
-        public virtual DateTime Updated { get; set; }
-        public virtual List<ProductDto> Products { get; set; }
+        public virtual IEnumerable<ProductDto> Products { get; set; }
+
     }
 }

@@ -2,6 +2,6 @@
 {
     public class AppSettingsConfig
     {
-        public string UrlProductApi { get; set; }
+        public string UrlProdutoApi { get; set; }
     }
 }

@@ -33,11 +33,11 @@ namespace Categories.Service.Services
             _logger = logger;
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<CategoryDto>> GetAll(CancellationToken cancellationToken)
+        public async Task<IEnumerable<CategoryBaseDto>> GetAll(CancellationToken cancellationToken)
         {
             try
             {
-                return _mapper.Map<IEnumerable<CategoryDto>>(await _categoryRepository.GetAll(cancellationToken));
+                return _mapper.Map<IEnumerable<CategoryBaseDto>>(await _categoryRepository.GetAll(cancellationToken));
             }
             catch (Exception ex)
             {
@@ -47,11 +47,11 @@ namespace Categories.Service.Services
             }
         }
 
-        public async Task<CategoryDto> GetById(long id, CancellationToken cancellationToken)
+        public async Task<CategoryBaseDto> GetById(long id, CancellationToken cancellationToken)
         {
             try
             {
-                return _mapper.Map<CategoryDto>(await _categoryRepository.Query().AsNoTracking().FirstOrDefaultAsync(s => s.Id == id, cancellationToken));
+                return _mapper.Map<CategoryBaseDto>(await _categoryRepository.Query().AsNoTracking().FirstOrDefaultAsync(s => s.Id == id, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -61,14 +61,14 @@ namespace Categories.Service.Services
             }
         }
 
-        public async Task<CategoryDto> Post(CategoryPostDto dto, CancellationToken cancellationToken)
+        public async Task<CategoryBaseDto> Post(CategoryPostDto dto, CancellationToken cancellationToken)
         {
             try
             {
-                Category produto = _mapper.Map<Category>(dto);
-                await Validate(produto, cancellationToken);
+                Category category = _mapper.Map<Category>(dto);
+                await Validate(category, cancellationToken);
 
-                return _mapper.Map<CategoryDto>(await _categoryRepository.Insert(produto, cancellationToken));
+                return _mapper.Map<CategoryBaseDto>(await _categoryRepository.Insert(category, cancellationToken));
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace Categories.Service.Services
             }
         }
 
-        public async Task<CategoryDto> Put(CategoryDto dto, CancellationToken cancellationToken)
+        public async Task<CategoryBaseDto> Put(CategoryBaseDto dto, CancellationToken cancellationToken)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Categories.Service.Services
                 category = _mapper.Map<Category>(dto);
                 await _categoryValidator.ValidateAsync(category, cancellationToken);
                 await _categoryRepository.Update(category, cancellationToken);
-                return _mapper.Map<CategoryDto>(await GetById(category.Id, cancellationToken));
+                return _mapper.Map<CategoryBaseDto>(await GetById(category.Id, cancellationToken));
             }
             catch (Exception ex)
             {

@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Categories.Domain.Entites.Base;
 using Categories.Domain.Interfaces.Repositories;
+using System.Collections.Generic;
 
 namespace Categories.Service.Services
 {
@@ -30,6 +31,15 @@ namespace Categories.Service.Services
         protected void AddNotification(string notification)
         {
             _notifications?.Add(notification);
+        }
+
+        public List<string> Validations()
+        {
+            var validations = new List<string>();
+            validations.AddRange(_validations.SelectMany(s => s.Errors).Select(s => s.ErrorMessage).ToList());
+            validations.AddRange(_notifications);
+            
+            return validations;
         }
 
     }

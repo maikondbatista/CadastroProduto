@@ -26,10 +26,11 @@ namespace Categories.Api.Controllers
         /// Método que retorna todas as categorias
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryBaseDto>))]
         public async Task<IActionResult> Get(CancellationToken token)
         {
             var result = await _service.GetAll(token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync(result);
         }
 
@@ -37,10 +38,11 @@ namespace Categories.Api.Controllers
         /// Método que insere uma categoria
         /// </summary>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryBaseDto>))]
         public async Task<IActionResult> Post(CategoryPostDto dto, CancellationToken token)
         {
             var result = await _service.Post(dto, token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync(result);
         }
 
@@ -48,10 +50,11 @@ namespace Categories.Api.Controllers
         /// Método que altera uma categoria
         /// </summary>
         [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryDto>))]
-        public async Task<IActionResult> Put(CategoryDto dto, CancellationToken token)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryBaseDto>))]
+        public async Task<IActionResult> Put(CategoryPutDto dto, CancellationToken token)
         {
             var result = await _service.Put(dto, token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync(result);
         }
 
@@ -59,14 +62,18 @@ namespace Categories.Api.Controllers
         /// Método que remove uma categoria
         /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryBaseDto>))]
         public async Task<IActionResult> Delete([FromRoute] long id, CancellationToken token)
         {
-            if (await _service.DeleteLinkedProducts(id, _config.UrlProductApi, token))
+            if (await _service.DeleteLinkedProducts(id, _config.UrlProdutoApi, token))
             {
-                await _service.Delete(id, token);
+                _notifications.AddRange(_service.Validations());
+                if(Valid())
+                    await _service.Delete(id, token);
 
-                return await ResponseAsync("Ok");
+                _notifications.AddRange(_service.Validations());
+
+                return await ResponseAsync();
             }
             else
             {
@@ -78,10 +85,11 @@ namespace Categories.Api.Controllers
         /// Método que retorna uma categoria por id
         /// </summary>
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryBaseDto>))]
         public async Task<IActionResult> GetById([FromRoute] long id, CancellationToken token)
         {
             var result = await _service.GetById(id, token);
+            _notifications.AddRange(_service.Validations());
             return await ResponseAsync(result);
         }
     }

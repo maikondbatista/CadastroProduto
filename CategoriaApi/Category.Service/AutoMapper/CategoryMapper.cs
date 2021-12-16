@@ -8,7 +8,7 @@ namespace Categories.Infra.CrossCutting.AutoMapper
     {
         public CategoryMapper()
         {
-            CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Category, CategoryBaseDto>().ReverseMap();
         }
     }
 }
