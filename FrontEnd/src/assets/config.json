@@ -1,0 +1,4 @@
+{
+    "urlCategoriaApi": "http://localhost:5258/",
+    "urlProdutoApi": "http://localhost:5257/"
+}

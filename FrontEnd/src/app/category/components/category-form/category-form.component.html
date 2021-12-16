@@ -1,0 +1,37 @@
+<div class="col-md-12">
+  <form [formGroup]="form">
+    <div class="col-md-6">
+      <label for="id" class="form-label">Id Categoria</label>
+      <input
+        type="text"
+        class="form-control"
+        id="id"
+        formControlName="id"
+        readonly
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label for="name" class="form-label">Nome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+      />
+    </div>
+  </form>
+  <div class="col-md-12 mt-1">
+    <button type="button" (click)="save()" class="btn btn-primary">
+      Salvar
+    </button>
+    <button
+      type="button"
+      (click)="cancel()"
+      *ngIf="!newCategory"
+      class="btn btn-success mx-1"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>

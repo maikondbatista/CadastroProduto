@@ -1,0 +1,54 @@
+<div class="col-md-12">
+  <form [formGroup]="form">
+    <div class="col-md-6">
+      <label for="id" class="form-label">Id Categoria</label>
+      <input
+        type="text"
+        class="form-control"
+        id="id"
+        formControlName="id"
+        readonly
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label for="name" class="form-label">Nome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        formControlName="name"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="price" class="form-label">Preço</label>
+      <input
+        type="text"
+        class="form-control"
+        id="price"
+        formControlName="price"
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="categoryId" class="form-label">Categoria</label>
+      <select id="categoryId" class="form-select" formControlName="categoryId">
+        <option *ngFor="let opt of categoriesSelect" [value]="opt.Value">
+          {{ opt.Text }}
+        </option>
+      </select>
+    </div>
+  </form>
+  <div class="col-md-12 mt-1">
+    <button type="button" (click)="save()" class="btn btn-primary">
+      Salvar
+    </button>
+    <button
+      type="button"
+      (click)="cancel()"
+      *ngIf="!newProduct"
+      class="btn btn-success mx-1"
+    >
+      Cancelar
+    </button>
+  </div>
+</div>

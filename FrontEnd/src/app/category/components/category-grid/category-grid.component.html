@@ -1,0 +1,31 @@
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nome</th>
+      <th scole="col">Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let category of gridData">
+      <td scope="row">{{ category.id }}</td>
+      <td>{{ category.name }}</td>
+      <td>
+          <button type="button" (click)="delete(category)" class="btn btn-danger">Excluir</button>
+          <button type="button" (click)="update(category)" class="btn btn-success m-1">Alterar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-between p-2">
+  <ngb-pagination
+    [collectionSize]="dataSource?.length || 1"
+    [(page)]="page"
+    [pageSize]="pageSize"
+    (pageChange)="refreshGrid()"
+  >
+  </ngb-pagination>
+
+</div>

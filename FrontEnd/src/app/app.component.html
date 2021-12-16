@@ -1,0 +1,17 @@
+<div class="container">
+<!-- your navs bound to current route fragments -->
+<ul ngbNav [activeId]="route.fragment | async" class="nav-tabs">
+  <li ngbNavItem="../home">
+    <a ngbNavLink routerLink="../home" >Home</a>
+  </li>
+  <li ngbNavItem="../categoria">
+    <a ngbNavLink routerLink="../categoria" >Categoria</a>
+  </li>
+  <li ngbNavItem="../produto">
+    <a ngbNavLink routerLink="../produto" >Produto</a>
+  </li>
+</ul>
+  <router-outlet> </router-outlet>
+  <ngx-loading [show]="isLoading" [config]="{ fullScreenBackdrop: true }"></ngx-loading>
+</div>
+

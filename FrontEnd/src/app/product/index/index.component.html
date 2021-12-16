@@ -1,0 +1,8 @@
+<app-product-form
+  (onClickCancel)="cancel()"
+  (onCreateNew)="refreshGrid()"
+></app-product-form>
+<app-product-grid
+  #grid
+  (onClickUpdate)="update($event)"
+></app-product-grid>
